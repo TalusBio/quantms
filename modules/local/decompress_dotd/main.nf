@@ -54,13 +54,13 @@ process DECOMPRESS {
       fi
     }
 
-    tar --version 2>&1 | tee --append ${prefix}_decompression.log
-    gunzip --version 2>&1 | tee --append ${prefix}_decompression.log
-    echo "Unpacking..." | tee --append ${compressed_file.baseName}_decompression.log
+    tar --version 2>&1 | tee -a ${prefix}_decompression.log
+    gunzip --version 2>&1 | tee -a ${prefix}_decompression.log
+    echo "Unpacking..." | tee -a ${compressed_file.baseName}_decompression.log
 
-    extract ${compressed_file} 2>&1 | tee --append ${compressed_file.baseName}_conversion.log
+    extract ${compressed_file} 2>&1 | tee -a ${compressed_file.baseName}_conversion.log
     mv *.d ${file(compressed_file.baseName).baseName}.d
-    ls -l | tee --append ${compressed_file.baseName}_decompression.log
+    ls -l | tee -a ${compressed_file.baseName}_decompression.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

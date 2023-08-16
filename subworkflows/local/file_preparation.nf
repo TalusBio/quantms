@@ -80,7 +80,7 @@ workflow FILE_PREPARATION {
 
     // Exctract qc data from .d files
     DOTD2MQC( ch_branched_input.dotd )
-    ch_mqc_data = ch_mqc_data.mix(DOTD2MQC.out.dotd_mqc_data)
+    ch_mqc_data = ch_mqc_data.mix(DOTD2MQC.out.dotd_mqc_data).map{ it -> it[1]}.collect()
     ch_versions = ch_versions.mix(DOTD2MQC.out.version)
 
     // Convert .d files to mzML

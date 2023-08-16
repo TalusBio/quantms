@@ -110,6 +110,6 @@ workflow FILE_PREPARATION {
     emit:
     results         = ch_results        // channel: [val(mzml_id), indexedmzml|.d.tar]
     statistics      = ch_statistics     // channel: [ *_mzml_info.tsv ]
-    mqc_custon_data = ch_mqc_data       // channel: [ *.yaml, *.tsv ]
+    mqc_custom_data = ch_mqc_data       // channel: [ *.yaml, *.tsv ]
     version         = ch_versions       // channel: [ *.version.txt ]
 }

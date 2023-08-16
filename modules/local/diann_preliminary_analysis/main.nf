@@ -30,8 +30,9 @@ process DIANN_PRELIMINARY_ANALYSIS {
 
     """
     # Tolerance unit was: ${meta.precursor_mass_tolerance_unit}
+    # Tolerance value was: ${meta["precursormasstolerance"]}
     # Tolerance value was: ${meta.precursor_mass_tolerance}
-    
+
     diann   --lib ${predict_tsv} \\
             --f ${mzML} \\
             --threads ${task.cpus} \\

@@ -29,6 +29,9 @@ process DIANN_PRELIMINARY_ANALYSIS {
     time_corr_only = params.time_corr_only ? "--time-corr-only" : ""
 
     """
+    # Tolerance unit was: ${meta.precursor_mass_tolerance_unit}
+    # Tolerance value was: ${meta.precursor_mass_tolerance}
+    
     diann   --lib ${predict_tsv} \\
             --f ${mzML} \\
             --threads ${task.cpus} \\

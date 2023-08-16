@@ -10,7 +10,7 @@ process DOTD2MQC {
     tuple val(meta), path(dot_d_file)
 
     output:
-    tuple path("outs/dotd_mqc.yml"), path("outs/*.tsv"), emit: dotd_mqc_data
+    tuple path("dotd_mqc.yml"), path("*.tsv"), emit: dotd_mqc_data
     path "versions.yml", emit: version
     path "*.log", emit: log
 
@@ -18,7 +18,7 @@ process DOTD2MQC {
     def prefix = task.ext.prefix ?: "${meta.mzml_id}"
 
     """
-    dotd_2_mqc.py "${dot_d_file}" outs  \\
+    dotd_2_mqc.py "${dot_d_file}" \${PWD}  \\
         2>&1 | tee dotd_2_mqc_${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml

@@ -54,8 +54,8 @@ process DECOMPRESS {
       fi
     }
 
-    tar --version 2>&1 | tee -a ${prefix}_decompression.log
-    gunzip --version 2>&1 | tee -a ${prefix}_decompression.log
+    tar --help 2>&1 | tee -a ${prefix}_decompression.log
+    gunzip --help 2>&1 | tee -a ${prefix}_decompression.log
     echo "Unpacking..." | tee -a ${compressed_file.baseName}_decompression.log
 
     extract ${compressed_file} 2>&1 | tee -a ${compressed_file.baseName}_conversion.log

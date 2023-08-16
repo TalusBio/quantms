@@ -20,18 +20,18 @@ process DIANN_PRELIMINARY_ANALYSIS {
     script:
     def args = task.ext.args ?: ''
 
-    // There is a bug here where it always uses the default value
-    mass_acc_ms1 = meta.precursor_mass_tolerance_unit.toString().toLowerCase().endsWith("ppm") ? meta.precursor_mass_tolerance : 5
-    mass_acc_ms2 = meta.fragment_mass_tolerance_unit.toString().toLowerCase().endsWith("ppm") ? meta.fragment_mass_tolerance : 13
+    // I am using here the ["key"] syntax, since the preprocessed meta makes
+    // the fields a linked hash map (in dia.nf)
+    mass_acc_ms1 = meta["precursormasstoleranceunit"].toLowerCase().endsWith("ppm") ? meta["precursormasstolerance"] : 5
+    mass_acc_ms2 = meta["fragmentmasstoleranceunit"].toLowerCase().endsWith("ppm") ? meta["fragmentmasstolerance"] : 13
 
     mass_acc = params.mass_acc_automatic ? "--quick-mass-acc --individual-mass-acc" : "--mass-acc $mass_acc_ms2 --mass-acc-ms1 $mass_acc_ms1"
     scan_window = params.scan_window_automatic ? "--individual-windows" : "--window $params.scan_window"
     time_corr_only = params.time_corr_only ? "--time-corr-only" : ""
 
     """
-    # Tolerance unit was: ${meta.precursor_mass_tolerance_unit}
-    # Tolerance value was: ${meta["precursormasstolerance"]}
-    # Tolerance value was: ${meta.precursor_mass_tolerance}
+    # Precursor Tolerance value was: ${meta["precursormasstolerance"]}
+    # Fragment Tolerance value was: ${meta["fragmentmasstolerance"]}
 
     diann   --lib ${predict_tsv} \\
             --f ${mzML} \\

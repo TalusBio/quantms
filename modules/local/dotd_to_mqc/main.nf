@@ -4,7 +4,7 @@ process DOTD2MQC {
     label 'process_single'
 
     conda "base::python=3.10"
-    container "python:3.10-slim"
+    container "continuumio/miniconda3:23.5.2-0-alpine"
 
     input:
     tuple val(meta), path(dot_d_file)
@@ -23,7 +23,8 @@ process DOTD2MQC {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pyopenms: \$(dotd_2_mqc.py --version | grep -oE "\\d\\.\\d\\.\\d")
+        dotd_2_mqc: \$(dotd_2_mqc.py --version | grep -oE "\\d\\.\\d\\.\\d")
+        dotd_2_mqc_python: \$(python --version | grep -oE "\\d\\.\\d\\.\\d")
     END_VERSIONS
     """
 }

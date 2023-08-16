@@ -5,7 +5,7 @@ process DECOMPRESS {
     label 'process_single'
     label 'error_retry'
 
-    container 'ubuntu:22.04'
+    container 'continuumio/miniconda3:23.5.2-0-alpine'
 
     stageInMode {
         if (task.attempt == 1) {
@@ -64,8 +64,8 @@ process DECOMPRESS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gunzip: \$(gunzip --version | grep -oP "\\d+\\.\\d+")
-        tar: \$(tar --version | grep -oP "\\d+\\.\\d+")
+        gunzip: \$(gunzip --version 2>&1 | grep -oE "\\d+\\.\\d+(\\.\\d+)?")
+        tar: \$(tar --version 2>&1 | grep -oE "\\d+\\.\\d+(\\.\\d+)?")
     END_VERSIONS
     """
 }

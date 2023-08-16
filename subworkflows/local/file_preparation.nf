@@ -3,9 +3,9 @@
 //
 
 include { THERMORAWFILEPARSER } from '../../modules/local/thermorawfileparser/main'
-include { TDF2MZML } from '../../modules/local/tdf2mzml/main'
-include { DECOMPRESS } from '../../modules/local/decompress_dotd/main'
-include { DOTD2MQC } from '../../modules/local/dotd_to_mqc/main'
+include { TDF2MZML            } from '../../modules/local/tdf2mzml/main'
+include { DECOMPRESS          } from '../../modules/local/decompress_dotd/main'
+include { DOTD2MQC            } from '../../modules/local/dotd_to_mqc/main'
 include { MZMLINDEXING        } from '../../modules/local/openms/mzmlindexing/main'
 include { MZMLSTATISTICS      } from '../../modules/local/mzmlstatistics/main'
 include { OPENMSPEAKPICKER    } from '../../modules/local/openms/openmspeakpicker/main'
@@ -13,7 +13,7 @@ include { OPENMSPEAKPICKER    } from '../../modules/local/openms/openmspeakpicke
 workflow FILE_PREPARATION {
     take:
     ch_rawfiles            // channel: [ val(meta), raw/mzml/d.tar ]
-.
+
     main:
     ch_versions   = Channel.empty()
     ch_results    = Channel.empty()
@@ -41,8 +41,7 @@ workflow FILE_PREPARATION {
         raw: WorkflowQuantms.hasExtension(it[1], '.raw')
         mzML: WorkflowQuantms.hasExtension(it[1], '.mzML')
         dotd: WorkflowQuantms.hasExtension(it[1], '.d')
-    }
-    .set { ch_branched_input }
+    }.set { ch_branched_input }
 
     //TODO we could also check for outdated mzML versions and try to update them
     ch_branched_input.mzML
@@ -85,12 +84,12 @@ workflow FILE_PREPARATION {
     ch_versions = ch_versions.mix(DOTD2MQC.out.version)
 
     // Convert .d files to mzML
-    if params.convert_dotd {
+    if (params.convert_dotd) {
         TDF2MZML( ch_branched_input.dotd )
         ch_versions = ch_versions.mix(TDF2MZML.out.version)
         ch_results = indexed_mzml_bundle.mix(TDF2MZML.out.mzmls_converted)
         // indexed_mzml_bundle = indexed_mzml_bundle.mix(TDF2MZML.out.mzmls_converted)
-    } else {
+    } else{
         ch_results = indexed_mzml_bundle.mix(ch_branched_input.dotd)
     }
 
@@ -107,7 +106,6 @@ workflow FILE_PREPARATION {
         ch_versions = ch_versions.mix(OPENMSPEAKPICKER.out.version)
         ch_results = OPENMSPEAKPICKER.out.mzmls_picked
     }
-
 
     emit:
     results         = ch_results        // channel: [val(mzml_id), indexedmzml|.d.tar]

@@ -10,7 +10,7 @@ process DOTD2MQC {
     tuple val(meta), path(dot_d_file)
 
     output:
-    tuple path("out/dotd_mqc.yml"), path("out/*.tsv"), emit: dotd_mqc_data
+    tuple path("outs/dotd_mqc.yml"), path("outs/*.tsv"), emit: dotd_mqc_data
     path "versions.yml", emit: version
     path "*.log", emit: log
 

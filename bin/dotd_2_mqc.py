@@ -173,6 +173,8 @@ class DotDFile:
         return out
 
     def write_tables(self, location):
+        logger.info(f"Writing tables for {self.basename}")
+        logger.info(f"Writing tables to {location}")
         location = Path(location)
         location.mkdir(parents=True, exist_ok=True)
         tic = self.ms1_tic
@@ -186,18 +188,22 @@ class DotDFile:
         peaks_location = location / f"ms1_peaks_{self.basename}.tsv"
         general_stats_location = location / f"general_stats_{self.basename}.tsv"
 
+        logger.info(f"Writing {tic_path}")
         with tic_path.open("w") as f:
             for t, i in tic:
                 f.write(f"{t}\t{i}\n")
 
+        logger.info(f"Writing {bpc_path}")
         with bpc_path.open("w") as f:
             for t, i in bpc:
                 f.write(f"{t}\t{i}\n")
 
+        logger.info(f"Writing {peaks_location}")
         with peaks_location.open("w") as f:
             for t, i in npeaks:
                 f.write(f"{t}\t{i}\n")
 
+        logger.info(f"Writing {general_stats_location}")
         with general_stats_location.open("w") as f:
             for k, v in general_stats.items():
                 f.write(f"{k}\t{v}\n")
@@ -233,5 +239,6 @@ if __name__ == "__main__":
         d = DotDFile(f)
         d.write_tables(output_path)
 
+    logger.info(f"Writing {output_path / 'dotd_mqc.yml'}")
     with (output_path / "dotd_mqc.yml").open("w") as f:
         f.write(MQC_YML)

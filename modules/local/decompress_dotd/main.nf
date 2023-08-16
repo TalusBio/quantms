@@ -64,8 +64,8 @@ process DECOMPRESS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gunzip: \$(gunzip --version 2>&1 | grep -oE "\\d+\\.\\d+(\\.\\d+)?")
-        tar: \$(tar --version 2>&1 | grep -oE "\\d+\\.\\d+(\\.\\d+)?")
+        gunzip: \$(gunzip --help 2>&1 | head -1 | grep -oE "\\d+\\.\\d+(\\.\\d+)?")
+        tar: \$(tar --help 2>&1 | head -1 | grep -oE "\\d+\\.\\d+(\\.\\d+)?")
     END_VERSIONS
     """
 }

@@ -42,7 +42,7 @@ process DOTD2MQC_AGGREGATE {
     container 'continuumio/miniconda3:23.5.2-0-alpine'
 
     input:
-    path '*.tsv'
+    path '*' // tsv files from DOTD2MQC_INDIVIDUAL
 
     output:
     path 'general_stats.tsv', emit: dotd_mqc_data

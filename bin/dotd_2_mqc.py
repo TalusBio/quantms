@@ -213,9 +213,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(add_help=True, usage=GENERAL_HELP)
     parser.add_argument("input", help="Input .d file or directory of .d files.")
     parser.add_argument("output", help="Output directory.")
-    parser.add_argument(
-        "--version", action="version", version=f"%(prog)s {VERSION}"
-    )
+    parser.add_argument("--version", action="version", version=f"%(prog)s {VERSION}")
 
     args, unkargs = parser.parse_known_args()
 

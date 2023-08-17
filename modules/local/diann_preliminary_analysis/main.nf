@@ -21,7 +21,7 @@ process DIANN_PRELIMINARY_ANALYSIS {
     def args = task.ext.args ?: ''
 
     // I am using here the ["key"] syntax, since the preprocessed meta makes
-    // the fields a linked hash map (in dia.nf)
+    // was evaluating to null when using the dot notation.
     mass_acc_ms1 = meta["precursormasstoleranceunit"].toLowerCase().endsWith("ppm") ? meta["precursormasstolerance"] : 5
     mass_acc_ms2 = meta["fragmentmasstoleranceunit"].toLowerCase().endsWith("ppm") ? meta["fragmentmasstolerance"] : 13
 
@@ -32,6 +32,8 @@ process DIANN_PRELIMINARY_ANALYSIS {
     """
     # Precursor Tolerance value was: ${meta["precursormasstolerance"]}
     # Fragment Tolerance value was: ${meta["fragmentmasstolerance"]}
+    # Precursor Tolerance unit was: ${meta["precursormasstoleranceunit"]}
+    # Fragment Tolerance unit was: ${meta["fragmentmasstoleranceunit"]}
 
     diann   --lib ${predict_tsv} \\
             --f ${mzML} \\

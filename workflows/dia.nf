@@ -72,7 +72,8 @@ workflow DIA {
     //
     // MODULE: ASSEMBLE_EMPIRICAL_LIBRARY
     //
-    ASSEMBLE_EMPIRICAL_LIBRARY(ch_result.ms_file.collect(),
+    // Order matters in DIANN, I am sorting on the collectio step.
+    ASSEMBLE_EMPIRICAL_LIBRARY(ch_result.ms_file.collect(sort = true),
                                 meta,
                                 DIANN_PRELIMINARY_ANALYSIS.out.diann_quant.collect(),
                                 speclib
@@ -88,7 +89,8 @@ workflow DIA {
     //
     // MODULE: DIANNSUMMARY
     //
-    ms_file_names = ch_result.ms_file.map{ msfile -> msfile.getName() }.collect()
+    // Order matters in DIANN, I am sorting on the collectio step.
+    ms_file_names = ch_result.ms_file.map{ msfile -> msfile.getName() }.collect(sort = true)
     DIANNSUMMARY(ms_file_names, meta, ASSEMBLE_EMPIRICAL_LIBRARY.out.empirical_library,
                     INDIVIDUAL_FINAL_ANALYSIS.out.diann_quant.collect(), ch_searchdb)
     ch_software_versions = ch_software_versions.mix(DIANNSUMMARY.out.version.ifEmpty(null))

@@ -37,7 +37,7 @@ process DOTD2MQC_AGGREGATE {
     container 'continuumio/miniconda3:23.5.2-0-alpine'
 
     input:
-    tuple path('*.tsv')
+    path '*.tsv'
 
     output:
     path 'general_stats.tsv', emit: dotd_mqc_data
@@ -46,7 +46,7 @@ process DOTD2MQC_AGGREGATE {
 
     script:
     """
-    ls -lcth *
+    ls -lcth
 
     dotd_2_mqc.py aggregate \${PWD} \${PWD}  \\
         2>&1 | tee dotd_2_mqc_agg.log

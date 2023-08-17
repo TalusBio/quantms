@@ -83,9 +83,10 @@ workflow FILE_PREPARATION {
     DOTD2MQC_INDIVIDUAL(ch_branched_input.dotd)
     // The map extracts the tsv files from the tuple, the other elem is the yml config.
     ch_mqc_data = ch_mqc_data.mix(DOTD2MQC_INDIVIDUAL.out.dotd_mqc_data.map{ it -> it[1] }.collect())
-    DOTD2MQC_AGGREGATE(ch_mqc_data)
+    DOTD2MQC_AGGREGATE(DOTD2MQC_INDIVIDUAL.out.general_stats.collect())
     ch_mqc_data = ch_mqc_data.mix(DOTD2MQC_AGGREGATE.out.dotd_mqc_data.collect())
     ch_versions = ch_versions.mix(DOTD2MQC_INDIVIDUAL.out.version)
+    ch_versions = ch_versions.mix(DOTD2MQC_AGGREGATE.out.version)
 
     // Convert .d files to mzML
     if (params.convert_dotd) {

@@ -15,6 +15,7 @@ process DOTD2MQC_INDIVIDUAL {
 
     output:
     tuple path("dotd_mqc.yml"), path("*.tsv"), emit: dotd_mqc_data
+    path "general_stats*.tsv", emit: general_stats
     path "versions.yml", emit: version
     path "*.log", emit: log
 

@@ -7,6 +7,10 @@ process DOTD2MQC_INDIVIDUAL {
     container "continuumio/miniconda3:23.5.2-0-alpine"
 
     input:
+    // Note: This step can be optimized by staging only the
+    // .tdf file inside the .d directory.
+    // Thus reducing the data transfer of the rest of the .d
+    // directory. IN PARTICULAR the .tdf.bin
     tuple val(meta), path(dot_d_file)
 
     output:

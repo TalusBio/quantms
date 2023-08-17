@@ -72,8 +72,8 @@ workflow DIA {
     //
     // MODULE: ASSEMBLE_EMPIRICAL_LIBRARY
     //
-    // Order matters in DIANN, I am sorting on the collectio step.
-    ASSEMBLE_EMPIRICAL_LIBRARY(ch_result.ms_file.collect(sort = true),
+    // Order matters in DIANN, This shoudl be sorted for reproducible results.
+    ASSEMBLE_EMPIRICAL_LIBRARY(ch_result.ms_file.collect(),
                                 meta,
                                 DIANN_PRELIMINARY_ANALYSIS.out.diann_quant.collect(),
                                 speclib
@@ -89,7 +89,9 @@ workflow DIA {
     //
     // MODULE: DIANNSUMMARY
     //
-    // Order matters in DIANN, I am sorting on the collectio step.
+    // Order matters in DIANN, This should be sorted for reproducible results.
+    // NOTE: I am getting here the names of the ms files, not the path.
+    // Since the next step only needs the name (since it uses the cached .quant)
     ms_file_names = ch_result.ms_file.map{ msfile -> msfile.getName() }.collect(sort = true)
     DIANNSUMMARY(ms_file_names, meta, ASSEMBLE_EMPIRICAL_LIBRARY.out.empirical_library,
                     INDIVIDUAL_FINAL_ANALYSIS.out.diann_quant.collect(), ch_searchdb)

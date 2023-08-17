@@ -45,11 +45,9 @@ process DOTD2MQC_AGGREGATE {
     path '*.log', emit: log
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.mzml_id}"
-
     """
     dotd_2_mqc.py aggregate \${PWD} \${PWD}  \\
-        2>&1 | tee dotd_2_mqc_agg_${prefix}.log
+        2>&1 | tee dotd_2_mqc_agg.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

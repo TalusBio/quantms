@@ -92,7 +92,7 @@ workflow DIA {
     // Order matters in DIANN, This should be sorted for reproducible results.
     // NOTE: I am getting here the names of the ms files, not the path.
     // Since the next step only needs the name (since it uses the cached .quant)
-    ms_file_names = ch_result.ms_file.map{ msfile -> msfile.getName() }.collect(sort = true)
+    ms_file_names = ch_result.ms_file.map{ msfile -> msfile.getName() }.collect()
     DIANNSUMMARY(ms_file_names, meta, ASSEMBLE_EMPIRICAL_LIBRARY.out.empirical_library,
                     INDIVIDUAL_FINAL_ANALYSIS.out.diann_quant.collect(), ch_searchdb)
     ch_software_versions = ch_software_versions.mix(DIANNSUMMARY.out.version.ifEmpty(null))

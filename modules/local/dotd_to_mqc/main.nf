@@ -46,6 +46,8 @@ process DOTD2MQC_AGGREGATE {
 
     script:
     """
+    ls -lcth *
+
     dotd_2_mqc.py aggregate \${PWD} \${PWD}  \\
         2>&1 | tee dotd_2_mqc_agg.log
 

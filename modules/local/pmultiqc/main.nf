@@ -39,7 +39,7 @@ process PMULTIQC {
     # and should be fixed when https://github.com/bigbio/pmultiqc/issues/80
     # gets solved.
     # Current hack to attempt matching file stems and not file extensions
-    sed -i "s/((\\.tar)|(\\.gz)|(\\.tar\\.gz))//g"  results/*openms_design.tsv
+    sed -i -E "s/((\\.tar)|(\\.gz)|(\\.tar\\.gz))//g"  results/*openms_design.tsv
 
     echo ">>>>>>>>> Experimental Design <<<<<<<<<"
     cat results/*openms_design.tsv

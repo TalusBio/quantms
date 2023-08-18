@@ -28,9 +28,16 @@ process PMULTIQC {
     # leaving here to ease debugging
     ls -lcth *
 
-    # Current hack to attempt matching file stems and not file extensions
-    sed -i -e "s/((.tar)|(.gz)|(.tar.gz))\\t/\\t/g"  results/*openms_design.tsv
+    echo ">>>>>>>>> Experimental Design <<<<<<<<<"
+    cat results/*openms_design.tsv
 
+    # Current hack to attempt matching file stems and not file extensions
+    sed -i -e "s/((\\.tar)|(\\.gz)|(\\.tar\\.gz))\\t/\\t/g"  results/*openms_design.tsv
+
+    echo ">>>>>>>>> Experimental Design <<<<<<<<<"
+    cat results/*openms_design.tsv
+
+    echo ">>>>>>>>> Running Multiqc <<<<<<<<<"
     multiqc \\
         -f \\
         --config ./results/multiqc_config.yml \\

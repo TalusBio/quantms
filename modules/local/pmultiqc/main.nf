@@ -29,7 +29,6 @@ process PMULTIQC {
     ls -lcth *
 
     # Current hack to attempt matching file stems and not file extensions
-    # sed -i -e "s/((.d.tar)|(.d)|(.mzML)|(.mzml)|(.d.tar.gz)|(.gz))\\t/\\t/g" 
     sed -i -e "s/((.tar)|(.gz)|(.tar.gz))\\t/\\t/g"  results/*openms_design.tsv
 
     multiqc \\

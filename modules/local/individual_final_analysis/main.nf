@@ -1,5 +1,5 @@
 process INDIVIDUAL_FINAL_ANALYSIS {
-    tag "$mzML.baseName"
+    tag "$ms_file.baseName"
     label 'process_high'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -30,8 +30,6 @@ process INDIVIDUAL_FINAL_ANALYSIS {
     }
 
     """
-    # Question: why is this using echo? wouldnt just the variable replacement do the same?
-
     diann   --lib ${library} \\
             --f ${ms_file} \\
             --fasta ${fasta} \\

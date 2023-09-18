@@ -19,9 +19,9 @@ process SDRFPARSING {
     script:
     def args = task.ext.args ?: ''
     if (params.convert_dotd) {
-        def extension_conversions = ",.d.gz:.mzML,.d.tar.gz:.mzML,d.tar:.mzML,.d.zip:.mzML,.d:.mzML"
+        extensionconversions = ",.d.gz:.mzML,.d.tar.gz:.mzML,d.tar:.mzML,.d.zip:.mzML,.d:.mzML"
     } else {
-        def extension_conversions = ",.gz:,.tar.gz:,.tar:,.zip:"
+        extensionconversions = ",.gz:,.tar.gz:,.tar:,.zip:"
     }
 
     """
@@ -30,9 +30,9 @@ process SDRFPARSING {
 
     parse_sdrf convert-openms \\
         -t2 -l \\
-        --extension_convert "raw:mzML${extension_conversions}" \\
+        --extension_convert raw:mzML$extensionconversions \\
         -s ${sdrf} \\
-        ${args} \\
+        $args \\
         2>&1 | tee ${sdrf.baseName}_parsing.log
 
     mv openms.tsv ${sdrf.baseName}_config.tsv

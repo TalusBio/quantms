@@ -2,10 +2,9 @@
 process DECOMPRESS {
     tag "$meta.mzml_id"
     label 'process_low'
-    label 'process_single'
     label 'error_retry'
 
-    container 'continuumio/miniconda3:23.5.2-0-alpine'
+    container 'ghcr.io/jspaezp/miniconda-alpine-zip:v23.5.2-0-alpine'
 
     stageInMode {
         if (task.attempt == 1) {
@@ -46,6 +45,7 @@ process DECOMPRESS {
                     *.tar.gz)    tar xvzf \$1    ;;
                     *.gz)        gunzip \$1      ;;
                     *.tar)       tar xvf \$1     ;;
+                    *.zip)       unzip \$1     ;;
                     *)           echo "extract: '\$1' - unknown archive method" ;;
                 esac
             else
@@ -56,6 +56,7 @@ process DECOMPRESS {
 
     tar --help 2>&1 | tee -a ${prefix}_decompression.log
     gunzip --help 2>&1 | tee -a ${prefix}_decompression.log
+    zip --help 2>&1 | tee -a ${prefix}_decompression.log
     echo "Unpacking..." | tee -a ${compressed_file.baseName}_decompression.log
 
     extract ${compressed_file} 2>&1 | tee -a ${compressed_file.baseName}_conversion.log
@@ -66,6 +67,7 @@ process DECOMPRESS {
     "${task.process}":
         gunzip: \$(gunzip --help 2>&1 | head -1 | grep -oE "\\d+\\.\\d+(\\.\\d+)?")
         tar: \$(tar --help 2>&1 | head -1 | grep -oE "\\d+\\.\\d+(\\.\\d+)?")
+        zip: \$(zip --help | head -2 | tail -1 | grep -oE "\\d+\\.\\d+")
     END_VERSIONS
     """
 }

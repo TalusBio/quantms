@@ -19,9 +19,9 @@ process SDRFPARSING {
     script:
     def args = task.ext.args ?: ''
     if (params.convert_dotd) {
-        def String extension_conversions = ",.d.gz:.mzML,.d.tar.gz:.mzML,d.tar:.mzML,.d.zip:.mzML,.d:.mzML"
+        def extension_conversions = ",.d.gz:.mzML,.d.tar.gz:.mzML,d.tar:.mzML,.d.zip:.mzML,.d:.mzML"
     } else {
-        def String extension_conversions = ",.gz:,.tar.gz:,.tar:,.zip:"
+        def extension_conversions = ",.gz:,.tar.gz:,.tar:,.zip:"
     }
 
     """

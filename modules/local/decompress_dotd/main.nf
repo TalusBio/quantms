@@ -60,7 +60,10 @@ process DECOMPRESS {
     echo "Unpacking..." | tee -a ${compressed_file.baseName}_decompression.log
 
     extract ${compressed_file} 2>&1 | tee -a ${compressed_file.baseName}_conversion.log
-    mv *.d ${file(compressed_file.baseName).baseName}.d
+    [ -d ${file(compressed_file.baseName).baseName}.d ] && \\
+        echo "Found ${file(compressed_file.baseName).baseName}.d" || \\
+        mv *.d ${file(compressed_file.baseName).baseName}.d
+
     ls -l | tee -a ${compressed_file.baseName}_decompression.log
 
     cat <<-END_VERSIONS > versions.yml

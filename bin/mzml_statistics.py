@@ -63,6 +63,9 @@ def ms_dataframe(ms_path: str) -> None:
 
     def parse_bruker_d(file_name: str, file_columns: list):
         sql_filepath = f"{file_name}/analysis.tdf"
+        if not Path(sql_filepath).exists():
+            msg = f"File '{sql_filepath}' not found"
+            raise FileNotFoundError(msg)
         conn = sqlite3.connect(sql_filepath)
         c = conn.cursor()
 
@@ -77,11 +80,14 @@ def ms_dataframe(ms_path: str) -> None:
             mslevel_map = {0: 1, 8: 2}
         elif 9 in df["MsMsType"].values:
             mslevel_map = {0: 1, 9: 2}
+        else:
+            msg = f"Unrecognized ms type '{df['MsMsType'].values}'"
+            raise ValueError(msg)
         df["MsMsType"] = df["MsMsType"].map(mslevel_map)
 
         try:
             precursor_df = pd.read_sql_query("SELECT * from Precursors", conn)
-        except Exception as e:
+        except pd.errors.DatabaseError as _:
             print(f"No precursers recorded in {file_name}")
             precursor_df = pd.DataFrame()
 
@@ -108,10 +114,30 @@ def ms_dataframe(ms_path: str) -> None:
 
         return df
 
+    if not (Path(ms_path).exists()):
+        print(f"Not found '{ms_path}', trying to find alias")
+        ms_path_path = Path(ms_path)
+        path_stem = str(ms_path_path.stem)
+        candidates = (
+            list(ms_path_path.parent.glob("*.d"))
+            + list(ms_path_path.parent.glob("*.mzml"))
+            + list(ms_path_path.parent.glob("*.mzML"))
+        )
+
+        candidates = [c for c in candidates if path_stem in str(c)]
+
+        if len(candidates) == 1:
+            ms_path = str(candidates[0].resolve())
+        else:
+            raise FileNotFoundError()
+
     if Path(ms_path).suffix == ".d" and Path(ms_path).is_dir():
         ms_df = parse_bruker_d(ms_path, file_columns)
     elif Path(ms_path).suffix in [".mzML", ".mzml"]:
         ms_df = parse_mzml(ms_path, file_columns)
+    else:
+        msg = f"Unrecognized or inexistent mass spec file '{ms_path}'"
+        raise RuntimeError(msg)
 
     ms_df.to_csv(
         f"{Path(ms_path).stem}_ms_info.tsv",

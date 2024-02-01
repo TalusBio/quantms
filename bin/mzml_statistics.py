@@ -86,10 +86,15 @@ def ms_dataframe(ms_path: str) -> None:
         df["MsMsType"] = df["MsMsType"].map(mslevel_map)
 
         try:
+            # This line raises an sqlite error if the table does not exist
+            _ = conn.execute("SELECT * from Precursors LIMIT 1").fetchall()
             precursor_df = pd.read_sql_query("SELECT * from Precursors", conn)
-        except pd.errors.DatabaseError as _:
-            print(f"No precursers recorded in {file_name}")
-            precursor_df = pd.DataFrame()
+        except sqlite3.OperationalError as e:
+            if "no such table: Precursors" in str(e):
+                print(f"No precursers recorded in {file_name}, This is normal for DIA data.")
+                precursor_df = pd.DataFrame()
+            else:
+                raise
 
         if len(df) == len(precursor_df):
             df = pd.concat([df, precursor_df["Charge", "MonoisotopicMz"]], axis=1)

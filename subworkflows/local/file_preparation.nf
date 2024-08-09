@@ -82,11 +82,12 @@ workflow FILE_PREPARATION {
     }
 
 
-    MZMLSTATISTICS(ch_results)
-    ch_statistics = ch_statistics.mix(MZMLSTATISTICS.out.ms_statistics.collect())
-    ch_spectrum_df = ch_spectrum_df.mix(MZMLSTATISTICS.out.spectrum_df)
-
-    ch_versions = ch_versions.mix(MZMLSTATISTICS.out.version)
+    if (!params.skip_mzml_statistics) {
+        MZMLSTATISTICS(ch_results)
+        ch_statistics = ch_statistics.mix(MZMLSTATISTICS.out.ms_statistics.collect())
+        ch_spectrum_df = ch_spectrum_df.mix(MZMLSTATISTICS.out.spectrum_df)
+        ch_versions = ch_versions.mix(MZMLSTATISTICS.out.version)
+    }
 
     if (params.openms_peakpicking) {
         // If the peak picker is enabled, it will over-write not bypass the .d files

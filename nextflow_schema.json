@@ -1057,6 +1057,13 @@
                     "help_text": "If passed, will use that spectral library to carry out the DIA-NN search, instead of predicting one from the fasta file.",
                     "hidden": false
                 },
+                "skip_mzml_statistics": {
+                    "type": "boolean",
+                    "description": "Skip calculating mzML statistics.",
+                    "fa_icon": "fas fa-forward",
+                    "default": false,
+                    "hidden": false
+                },
                 "skip_preliminary_analysis": {
                     "type": "boolean",
                     "description": "Skip the preliminary analysis step, thus use the passed spectral library as-is insted of generating a local concensus library.",
